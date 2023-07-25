@@ -42,6 +42,7 @@ export default {
       setTimeout(() => resolve(response), 1000);
     });
   },
+  
   list: async function () {
     return new Promise((resolve) => {
       response.data.resultCode = 0;
@@ -49,4 +50,54 @@ export default {
       setTimeout(() => resolve(response), 500);
     });
   },
+
+  create: async function (manager) {
+    let data = {
+      email: manager.email,
+      pw: manager.pw,
+      name: manager.name,
+      rule: manager.rule,
+      phoneNumber: manager.phoneNumber,
+    };
+    managers.rows.push(data);
+    return new Promise((resolve) => {
+      response.data.resultCode = 0;
+      setTimeout(() => resolve(response), 500);
+    });
+  },
+
+  update: async function (manager) {
+    managers.rows = managers.rows.map((e) => {
+      if (e.email === manager.email) {
+        e.pw = manager.pw;
+        e.name = manager.name;
+        e.rule = manager.rule;
+        e.phoneNumber = manager.phoneNumber;
+      }
+      return e;
+    });
+    return new Promise((resolve) => {
+      response.data.resultCode = 0;
+      setTimeout(() => resolve(response), 500);
+    });
+  },
+
+  delete: async function (email) {
+    var found = false;
+    managers.rows = managers.rows.filter((e) => {
+      if (e.email === email) {
+        found = true;
+      }
+      return e.email !== email;
+    });
+    return new Promise((resolve, reject) => {
+      if (found) {
+        response.data.resultCode = 0;
+        setTimeout(() => resolve(response), 500);
+      } else {
+        reject();
+      }
+    });
+  },
+
 };
